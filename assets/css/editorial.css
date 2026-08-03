@@ -15,14 +15,21 @@
     --paper:      #FFFFFF;
     --stone:      #ECEFF3;    /* light section BG (from tarlu.com) */
     --stone-50:   #F5F6F8;    /* softer stone for subtle alternation */
-    --dark:       #0D141A;    /* dark section BG (from tarlu.com) */
     --hairline:   #E4E5E7;
 
-    /* Real tarlu.com accents. */
-    --blue:       #0075C2;    /* primary CTA blue */
-    --blue-600:   #005E9C;    /* hover */
-    --gold:       #D4AF37;    /* decorative accent */
-    --gold-600:   #A88A29;    /* deeper gold for on-light headlines */
+    /* Blue is a DOMINANT colour on tarlu.com, not just an accent —
+       big full-width feature sections use it. */
+    --blue:       #0075C2;    /* brand blue (large section BG + CTA) */
+    --blue-600:   #005E9C;    /* hover / darker blue */
+    --navy:       #001A78;    /* deep navy (dark sections, pillar cards) */
+    --navy-90:    rgba(0, 26, 120, 0.9);
+
+    /* Dark = deep navy (was near-black, made visibly blue). */
+    --dark:       var(--navy);
+
+    /* Gold accent (decorative italic, quotes). */
+    --gold:       #D4AF37;
+    --gold-600:   #A88A29;
 
     --wrap:      1240px;
     --wrap-narrow: 780px;
@@ -476,13 +483,20 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 .testimonial-author small { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
 
 /* ----- Big CTA banner ------------------------------------------------- */
+/* Tarlu.com uses giant blue feature blocks — the CTA banner adopts that. */
 .cta-banner {
     padding: clamp(4rem, 8vw, 7rem) 0;
-    background: var(--stone-50);
+    background: var(--blue);
+    color: var(--paper);
     text-align: center;
 }
-.cta-banner h2 { max-width: 18ch; margin: 0 auto 1.5rem; }
-.cta-banner .lead { margin: 0 auto 2.5rem; max-width: 55ch; }
+.cta-banner h2 { max-width: 18ch; margin: 0 auto 1.5rem; color: var(--paper); }
+.cta-banner h2 em { color: rgba(255,255,255,0.85); }
+.cta-banner .lead { margin: 0 auto 2.5rem; max-width: 55ch; color: rgba(255,255,255,0.85); }
+.cta-banner .eyebrow { color: rgba(255,255,255,0.7); }
+.cta-banner .eyebrow::before { color: rgba(255,255,255,0.5); }
+.cta-banner .btn-primary { background: var(--paper); color: var(--blue); border-color: var(--paper); }
+.cta-banner .btn-primary:hover { background: transparent; color: var(--paper); border-color: var(--paper); }
 
 /* ----- Contact form --------------------------------------------------- */
 .contact-layout {
