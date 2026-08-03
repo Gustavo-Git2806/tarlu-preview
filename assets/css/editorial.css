@@ -142,7 +142,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-weight: 500;
     letter-spacing: 0.01em;
     border: 1px solid var(--ink);
-    border-radius: 0;
+    border-radius: 999px;
     transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
     cursor: pointer;
     text-decoration: none;
@@ -205,8 +205,9 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     height: 1px; background: var(--ink);
 }
 .nav-cta {
-    padding: 0.65rem 1.15rem;
+    padding: 0.65rem 1.25rem;
     border: 1px solid var(--ink);
+    border-radius: 999px;
     color: var(--ink) !important;
 }
 .nav-cta:hover { background: var(--ink); color: var(--paper) !important; }
@@ -225,12 +226,15 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     padding: 0;
 }
 .hero-image {
-    position: absolute; inset: 0;
+    position: absolute; inset: 1.25rem;
     background-size: cover;
     background-position: center 65%;
     background-color: var(--dark);
     filter: brightness(0.7);
+    border-radius: 24px;
+    overflow: hidden;
 }
+@media (max-width: 700px) { .hero-image { inset: 0.75rem; border-radius: 16px; } }
 .hero::after {
     /* dark→transparent gradient from bottom so text is readable */
     content: '';
@@ -373,7 +377,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     aspect-ratio: 3/4;
     background-size: cover; background-position: center;
     background-color: var(--stone);
-    border-radius: 3px;
+    border-radius: 24px;
     box-shadow: 0 30px 60px -30px rgba(0, 26, 120, 0.2);
 }
 .split-image::after {
@@ -385,7 +389,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     background-size: cover;
     background-position: center;
     background-color: var(--stone);
-    border-radius: 3px;
+    border-radius: 20px;
     box-shadow: 0 20px 40px -18px rgba(0, 26, 120, 0.25);
     border: 6px solid var(--paper);
 }
@@ -430,7 +434,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     background-size: cover; background-position: center;
     background-color: var(--stone);
     transition: transform var(--dur-slow) var(--ease), filter var(--dur) var(--ease);
-    border-radius: 3px;
+    border-radius: 20px;
     overflow: hidden;
 }
 /* Wide bento tiles use a landscape ratio; tall ones stay portrait. */
@@ -478,7 +482,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     aspect-ratio: 3/2;
     background-size: cover; background-position: center;
     background-color: var(--stone);
-    border-radius: 3px;
+    border-radius: 20px;
     box-shadow: 0 20px 50px -25px rgba(0, 26, 120, 0.18);
     transition: transform var(--dur-slow) var(--ease);
 }
@@ -528,8 +532,10 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     padding: 1.75rem;
     background: var(--paper);
     border: 1px solid var(--hairline);
-    transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+    border-radius: 20px;
+    transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
+.service-item:hover { box-shadow: 0 20px 40px -25px rgba(0, 26, 120, 0.2); }
 .service-item:hover { border-color: var(--ink); transform: translateY(-2px); }
 .service-item h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
 .service-item .strap { font-size: 0.92rem; color: var(--ink); font-weight: 500; margin-bottom: 0.5rem; font-style: italic; font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 32; }
@@ -547,9 +553,13 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 @media (max-width: 800px) { .testimonial-grid { grid-template-columns: 1fr; } }
 .testimonial {
     display: flex; flex-direction: column;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.15);
+    padding: 2rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
+.testimonial:hover { background: rgba(255,255,255,0.06); transform: translateY(-3px); }
 .testimonial-quote {
     font-family: 'Space Grotesk', -apple-system, sans-serif;
     font-size: clamp(1.25rem, 1.8vw, 1.6rem);
@@ -572,11 +582,16 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 /* ----- Big CTA banner ------------------------------------------------- */
 /* Tarlu.com uses giant blue feature blocks — the CTA banner adopts that. */
 .cta-banner {
-    padding: clamp(4rem, 8vw, 7rem) 0;
+    padding: clamp(4rem, 8vw, 7rem) 2rem;
     background: var(--blue);
     color: var(--paper);
     text-align: center;
+    border-radius: 32px;
+    max-width: calc(var(--wrap) - 2rem);
+    margin: clamp(4rem, 6vw, 6rem) auto;
+    box-shadow: 0 30px 80px -30px rgba(0, 26, 120, 0.4);
 }
+@media (max-width: 700px) { .cta-banner { border-radius: 20px; margin-inline: 1rem; } }
 .cta-banner h2 { max-width: 18ch; margin: 0 auto 1.5rem; color: var(--paper); }
 .cta-banner h2 em { color: rgba(255,255,255,0.85); }
 .cta-banner .lead { margin: 0 auto 2.5rem; max-width: 55ch; color: rgba(255,255,255,0.85); }
@@ -607,11 +622,10 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-weight: 500;
 }
 .field input, .field textarea {
-    padding: 0.65rem 0;
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid var(--hairline);
-    border-radius: 0;
+    padding: 0.9rem 1.1rem;
+    background: var(--stone-50);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
     color: var(--ink);
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 1.05rem;
@@ -645,8 +659,14 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 .info-block a:hover { color: var(--muted); }
 
 .location-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.25rem; }
-.location-list li { padding-bottom: 1.25rem; border-bottom: 1px solid var(--hairline); }
-.location-list li:last-child { border-bottom: 0; }
+.location-list li {
+    padding: 1rem 1.15rem;
+    background: var(--stone-50);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    transition: border-color var(--dur) var(--ease);
+}
+.location-list li:hover { border-color: var(--ink-50); }
 .location-list li strong { display: block; color: var(--ink); margin-bottom: 0.35rem; font-size: 0.95rem; }
 .location-list li span { color: var(--muted); font-size: 0.9rem; font-family: 'IBM Plex Sans', sans-serif; }
 
