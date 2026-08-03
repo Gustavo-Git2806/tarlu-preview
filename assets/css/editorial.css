@@ -371,33 +371,16 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     align-items: center;
 }
 @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
-/* Layered split: primary image + smaller offset image over it. */
+/* Single clean image with rounded shadow — no layering. */
 .split-image {
-    position: relative;
-    aspect-ratio: 3/4;
+    aspect-ratio: 4/5;
     background-size: cover; background-position: center;
     background-color: var(--stone);
-    border-radius: 24px;
-    box-shadow: 0 30px 60px -30px rgba(0, 26, 120, 0.2);
+    border-radius: 28px;
+    box-shadow: 0 40px 80px -30px rgba(0, 26, 120, 0.25);
 }
-.split-image::after {
-    content: '';
-    position: absolute;
-    width: 55%; aspect-ratio: 4/5;
-    right: -12%; bottom: -8%;
-    background-image: inherit;
-    background-size: cover;
-    background-position: center;
-    background-color: var(--stone);
-    border-radius: 20px;
-    box-shadow: 0 20px 40px -18px rgba(0, 26, 120, 0.25);
-    border: 6px solid var(--paper);
-}
-/* Second image via data-attribute so we can vary source per section. */
-.split-image[data-second]::after { background-image: var(--split-second); }
 @media (max-width: 900px) {
-    .split-image { aspect-ratio: 4/3; transform: none; }
-    .split-image::after { display: none; }
+    .split-image { aspect-ratio: 4/3; }
 }
 
 /* ----- Markets snapshot (BENTO with fixed rows for true masonry) --- */
@@ -443,11 +426,15 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 .market-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -20px rgba(0, 26, 120, 0.3); }
 .market-image {
     position: absolute; inset: 0;
-    background-size: cover; background-position: center;
+    background-size: cover; background-position: center 30%;
     background-color: var(--stone);
     transition: transform var(--dur-slow) var(--ease), filter var(--dur) var(--ease);
     z-index: 0;
 }
+/* Focal-point tuning per bento tile — prevents faces/hands being cropped. */
+.markets-grid > *:nth-child(2) .market-image { background-position: center 25%; }
+.markets-grid > *:nth-child(5) .market-image { background-position: center 40%; }
+.markets-grid > *:nth-child(6) .market-image { background-position: center; }
 .market-card:hover .market-image { transform: scale(1.05); }
 .market-card::after {
     /* dark→transparent gradient so overlay text stays readable */
