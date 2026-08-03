@@ -1,0 +1,7 @@
+# Editor / OS junk
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local test files
+*.log
