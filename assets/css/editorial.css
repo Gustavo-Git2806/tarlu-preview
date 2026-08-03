@@ -432,9 +432,12 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     z-index: 0;
 }
 /* Focal-point tuning per bento tile — prevents faces/hands being cropped. */
+.markets-grid > *:nth-child(1) .market-image { background-position: center 50%; }
 .markets-grid > *:nth-child(2) .market-image { background-position: center 25%; }
+.markets-grid > *:nth-child(3) .market-image { background-position: center 30%; }
+.markets-grid > *:nth-child(4) .market-image { background-position: center 60%; }
 .markets-grid > *:nth-child(5) .market-image { background-position: center 40%; }
-.markets-grid > *:nth-child(6) .market-image { background-position: center; }
+.markets-grid > *:nth-child(6) .market-image { background-position: center 50%; }
 .market-card:hover .market-image { transform: scale(1.05); }
 .market-card::after {
     /* dark→transparent gradient so overlay text stays readable */
