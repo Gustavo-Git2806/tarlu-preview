@@ -169,13 +169,14 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     padding-block: 1.15rem;
 }
 .brand {
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 1.65rem;
-    font-weight: 500;
-    letter-spacing: -0.03em;
-    font-variation-settings: 'SOFT' 100, 'opsz' 144;
+    display: inline-flex;
+    align-items: center;
     color: var(--ink);
+    text-decoration: none;
 }
+.brand img { display: block; height: 40px; width: auto; }
+.footer-brand .brand img { height: 44px; filter: brightness(0) invert(1); }
+@media (max-width: 800px) { .brand img { height: 34px; } }
 .nav { display: flex; align-items: center; gap: 2.5rem; }
 .nav a {
     font-family: 'Inter', sans-serif;
