@@ -6,17 +6,23 @@
    ========================================================================== */
 
 :root {
-    /* All colours extracted from live tarlu.com — no accent colour added. */
-    --ink:        #1D1E20;
+    /* All colours extracted from live tarlu.com. */
+    --ink:        #1D1E20;    /* body text */
     --ink-90:     rgba(29, 30, 32, 0.9);
     --ink-70:     rgba(29, 30, 32, 0.7);
     --ink-50:     rgba(29, 30, 32, 0.5);
-    --muted:      #8B8A88;
+    --muted:      #56585E;    /* muted text (from tarlu.com rgb(86,88,94)) */
     --paper:      #FFFFFF;
-    --stone:      #ECEFF3;   /* light section BG (from tarlu.com) */
-    --stone-50:   #F5F6F8;   /* softer stone for subtle alternation */
-    --dark:       #0D141A;   /* dark section BG (from tarlu.com) */
+    --stone:      #ECEFF3;    /* light section BG (from tarlu.com) */
+    --stone-50:   #F5F6F8;    /* softer stone for subtle alternation */
+    --dark:       #0D141A;    /* dark section BG (from tarlu.com) */
     --hairline:   #E4E5E7;
+
+    /* Real tarlu.com accents. */
+    --blue:       #0075C2;    /* primary CTA blue */
+    --blue-600:   #005E9C;    /* hover */
+    --gold:       #D4AF37;    /* decorative accent */
+    --gold-600:   #A88A29;    /* deeper gold for on-light headlines */
 
     --wrap:      1240px;
     --wrap-narrow: 780px;
@@ -81,7 +87,7 @@ em     { font-style: italic; }
 h1 em, h2 em, h3 em {
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
-    color: var(--muted);
+    color: var(--gold-600);
     font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
 }
 
@@ -97,7 +103,7 @@ h1 em, h2 em, h3 em {
 }
 .eyebrow::before {
     content: '— ';
-    color: var(--ink);
+    color: var(--gold-600);
     font-weight: 400;
 }
 .lead {
@@ -138,8 +144,8 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 .btn .arrow { display: inline-block; transition: transform var(--dur) var(--ease); }
 .btn:hover .arrow { transform: translateX(4px); }
 
-.btn-primary { background: var(--ink); color: var(--paper); }
-.btn-primary:hover { background: transparent; color: var(--ink); }
+.btn-primary { background: var(--blue); color: var(--paper); border-color: var(--blue); }
+.btn-primary:hover { background: var(--blue-600); border-color: var(--blue-600); }
 
 .btn-ghost { background: transparent; color: var(--ink); border-color: var(--hairline); }
 .btn-ghost:hover { border-color: var(--ink); }
@@ -287,7 +293,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 .section-dark h2, .section-dark h3 { color: var(--paper); }
 .section-dark p  { color: rgba(255,255,255,0.7); }
 .section-dark .eyebrow { color: rgba(255,255,255,0.55); }
-.section-dark .eyebrow::before { color: rgba(255,255,255,0.5); }
+.section-dark .eyebrow::before { color: var(--gold); }
 
 /* ----- How it works (editorial numbered steps) ------------------------ */
 .how-list {
@@ -301,7 +307,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
     font-size: 1.15rem;
-    color: var(--muted);
+    color: var(--gold-600);
     margin-bottom: 1.25rem;
     letter-spacing: 0.02em;
     font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
@@ -348,7 +354,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
     font-size: 0.9rem;
-    color: var(--muted);
+    color: var(--gold-600);
     letter-spacing: 0.02em;
 }
 .market-card h3 {
@@ -385,7 +391,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
     font-size: 0.9rem;
-    color: var(--muted);
+    color: var(--gold-600);
     display: block;
     margin-bottom: 0.5rem;
 }
@@ -408,7 +414,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
     font-size: 1rem;
-    color: var(--muted);
+    color: var(--gold-600);
     letter-spacing: 0.02em;
     font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
 }
@@ -459,8 +465,8 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-weight: 400;
     font-variation-settings: 'opsz' 144;
 }
-.testimonial-quote::before { content: '"'; color: rgba(255,255,255,0.35); font-size: 1.5em; line-height: 0; vertical-align: -0.15em; margin-right: 0.05em; }
-.testimonial-quote::after { content: '"'; color: rgba(255,255,255,0.35); font-size: 1.5em; line-height: 0; vertical-align: -0.15em; margin-left: 0.05em; }
+.testimonial-quote::before { content: '"'; color: var(--gold); font-size: 1.5em; line-height: 0; vertical-align: -0.15em; margin-right: 0.05em; }
+.testimonial-quote::after { content: '"'; color: var(--gold); font-size: 1.5em; line-height: 0; vertical-align: -0.15em; margin-left: 0.05em; }
 .testimonial-author {
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
