@@ -213,29 +213,37 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 
 .nav-toggle { display: none; width: 40px; height: 40px; }
 
-/* ----- Hero ------------------------------------------------------------ */
+/* ----- Hero (modern: image bleeds to viewport edge on the right) ----- */
 .hero {
     padding: clamp(4rem, 10vw, 8rem) 0 clamp(3rem, 6vw, 5rem);
     position: relative;
+    overflow: hidden;
 }
+.hero .wrap { max-width: none; padding-right: 0; padding-left: clamp(1.25rem, 8vw, 6rem); }
 .hero-grid {
     display: grid;
-    grid-template-columns: 7fr 5fr;
-    gap: clamp(2rem, 5vw, 5rem);
-    align-items: end;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 5vw, 6rem);
+    align-items: stretch;
 }
-@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
-
-.hero-content h1 {
-    margin-bottom: 2rem;
-}
+.hero-content { padding-right: clamp(1rem, 3vw, 2rem); align-self: center; padding-block: 3rem; }
+.hero-content h1 { margin-bottom: 2rem; }
 .hero-image {
-    aspect-ratio: 4/5;
+    aspect-ratio: auto;
+    min-height: clamp(360px, 62vh, 640px);
     background-size: cover;
     background-position: center;
     background-color: var(--stone);
+    border-radius: 4px 0 0 4px;
+    box-shadow: -40px 40px 80px -30px rgba(0, 26, 120, 0.15);
 }
 .hero-cta { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
+@media (max-width: 900px) {
+    .hero .wrap { padding-right: clamp(1.25rem, 4vw, 2rem); max-width: var(--wrap); margin: 0 auto; }
+    .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-content { padding-right: 0; padding-block: 0; }
+    .hero-image { min-height: 340px; border-radius: 4px; box-shadow: none; }
+}
 
 /* KPI strip */
 .kpi-row {
@@ -330,10 +338,14 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 }
 @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
 .split-image {
-    aspect-ratio: 4/5;
+    aspect-ratio: 3/4;
     background-size: cover; background-position: center;
     background-color: var(--stone);
+    border-radius: 3px;
+    box-shadow: 0 30px 60px -30px rgba(0, 26, 120, 0.15);
+    transform: translateY(-1.5rem);
 }
+@media (max-width: 900px) { .split-image { transform: none; aspect-ratio: 4/3; } }
 
 /* ----- Markets snapshot (editorial cards) ------------------------------ */
 .markets-grid {
@@ -349,13 +361,18 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     transition: transform var(--dur) var(--ease);
 }
 .market-card:hover { transform: translateY(-4px); }
+/* Bento-style varied aspect ratios so the grid doesn't feel like a
+   rigid square. Each card lands in a rhythm of 4/5 → 3/4 → 1/1. */
 .market-image {
     aspect-ratio: 4/5;
     background-size: cover; background-position: center;
     background-color: var(--stone);
-    transition: filter var(--dur) var(--ease);
+    transition: transform var(--dur-slow) var(--ease), filter var(--dur) var(--ease);
+    border-radius: 3px;
 }
-.market-card:hover .market-image { filter: brightness(1.03); }
+.market-card:nth-child(3n+2) .market-image { aspect-ratio: 3/4; }
+.market-card:nth-child(3n)   .market-image { aspect-ratio: 5/6; }
+.market-card:hover .market-image { filter: brightness(1.03); transform: scale(1.015); }
 .market-card .num {
     font-family: 'Space Grotesk', -apple-system, sans-serif;
     font-style: italic;
@@ -389,9 +406,11 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     .market-row:nth-child(even) .market-row-image { order: 0; }
 }
 .market-row-image {
-    aspect-ratio: 4/3;
+    aspect-ratio: 3/2;
     background-size: cover; background-position: center;
     background-color: var(--stone);
+    border-radius: 3px;
+    box-shadow: 0 20px 50px -25px rgba(0, 26, 120, 0.18);
 }
 .market-row-body .num {
     font-family: 'Space Grotesk', -apple-system, sans-serif;
