@@ -6,19 +6,17 @@
    ========================================================================== */
 
 :root {
+    /* All colours extracted from live tarlu.com — no accent colour added. */
     --ink:        #1D1E20;
     --ink-90:     rgba(29, 30, 32, 0.9);
     --ink-70:     rgba(29, 30, 32, 0.7);
     --ink-50:     rgba(29, 30, 32, 0.5);
     --muted:      #8B8A88;
     --paper:      #FFFFFF;
-    --cream:      #F5F3EE;
-    --stone:      #ECEFF3;
-    --dark:       #0D141A;
-    --bronze:     #C9A96E;
-    --bronze-600: #A68849;
-    --bronze-050: #F7F0E1;
-    --hairline:   #E4E3DE;
+    --stone:      #ECEFF3;   /* light section BG (from tarlu.com) */
+    --stone-50:   #F5F6F8;   /* softer stone for subtle alternation */
+    --dark:       #0D141A;   /* dark section BG (from tarlu.com) */
+    --hairline:   #E4E5E7;
 
     --wrap:      1240px;
     --wrap-narrow: 780px;
@@ -44,7 +42,7 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
 
 :focus { outline: 0; }
-:focus-visible { outline: 2px solid var(--bronze); outline-offset: 4px; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 
 .skip-link {
     position: absolute; left: -9999px; top: 0;
@@ -55,7 +53,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 .skip-link:focus { left: 1rem; top: 1rem; }
 
-::selection { background: var(--bronze); color: var(--ink); }
+::selection { background: var(--ink); color: var(--ink); }
 
 /* ----- Typography ------------------------------------------------------ */
 .serif { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.02em; }
@@ -83,7 +81,7 @@ em     { font-style: italic; }
 h1 em, h2 em, h3 em {
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
-    color: var(--bronze-600);
+    color: var(--muted);
     font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
 }
 
@@ -99,7 +97,7 @@ h1 em, h2 em, h3 em {
 }
 .eyebrow::before {
     content: '— ';
-    color: var(--bronze);
+    color: var(--ink);
     font-weight: 400;
 }
 .lead {
@@ -189,7 +187,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 .nav a:hover, .nav a.active { color: var(--ink); }
 .nav a.active::after {
     content: ''; position: absolute; bottom: -6px; left: 0; right: 0;
-    height: 1px; background: var(--bronze);
+    height: 1px; background: var(--ink);
 }
 .nav-cta {
     padding: 0.65rem 1.15rem;
@@ -283,12 +281,12 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 .section-head.centered .lead { margin-inline: auto; }
 
 /* ----- Cream / dark section variants ----------------------------------- */
-.section-cream { background: var(--cream); }
+.section-cream { background: var(--stone-50); }
 .section-dark  { background: var(--dark); color: var(--paper); }
 .section-dark h2, .section-dark h3 { color: var(--paper); }
 .section-dark p  { color: rgba(255,255,255,0.7); }
 .section-dark .eyebrow { color: rgba(255,255,255,0.55); }
-.section-dark .eyebrow::before { color: var(--bronze); }
+.section-dark .eyebrow::before { color: rgba(255,255,255,0.5); }
 
 /* ----- How it works (editorial numbered steps) ------------------------ */
 .how-list {
@@ -302,7 +300,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
     font-size: 1.15rem;
-    color: var(--bronze-600);
+    color: var(--muted);
     margin-bottom: 1.25rem;
     letter-spacing: 0.02em;
     font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
@@ -349,7 +347,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
     font-size: 0.9rem;
-    color: var(--bronze-600);
+    color: var(--muted);
     letter-spacing: 0.02em;
 }
 .market-card h3 {
@@ -386,7 +384,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
     font-size: 0.9rem;
-    color: var(--bronze-600);
+    color: var(--muted);
     display: block;
     margin-bottom: 0.5rem;
 }
@@ -409,7 +407,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
     font-size: 1rem;
-    color: var(--bronze-600);
+    color: var(--muted);
     letter-spacing: 0.02em;
     font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
 }
@@ -460,8 +458,8 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     font-weight: 400;
     font-variation-settings: 'opsz' 144;
 }
-.testimonial-quote::before { content: '"'; color: var(--bronze); font-size: 1.5em; line-height: 0; vertical-align: -0.15em; margin-right: 0.05em; }
-.testimonial-quote::after { content: '"'; color: var(--bronze); font-size: 1.5em; line-height: 0; vertical-align: -0.15em; margin-left: 0.05em; }
+.testimonial-quote::before { content: '"'; color: rgba(255,255,255,0.35); font-size: 1.5em; line-height: 0; vertical-align: -0.15em; margin-right: 0.05em; }
+.testimonial-quote::after { content: '"'; color: rgba(255,255,255,0.35); font-size: 1.5em; line-height: 0; vertical-align: -0.15em; margin-left: 0.05em; }
 .testimonial-author {
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
@@ -473,7 +471,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 /* ----- Big CTA banner ------------------------------------------------- */
 .cta-banner {
     padding: clamp(4rem, 8vw, 7rem) 0;
-    background: var(--cream);
+    background: var(--stone-50);
     text-align: center;
 }
 .cta-banner h2 { max-width: 18ch; margin: 0 auto 1.5rem; }
@@ -537,7 +535,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     transition: color var(--dur) var(--ease);
     font-variation-settings: 'opsz' 144;
 }
-.info-block a:hover { color: var(--bronze-600); }
+.info-block a:hover { color: var(--muted); }
 
 .location-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.25rem; }
 .location-list li { padding-bottom: 1.25rem; border-bottom: 1px solid var(--hairline); }
@@ -572,7 +570,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 }
 .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.7rem; }
 .footer-col ul a { color: rgba(255,255,255,0.7); font-size: 0.95rem; transition: color var(--dur) var(--ease); }
-.footer-col ul a:hover { color: var(--bronze); }
+.footer-col ul a:hover { color: var(--paper); }
 
 .footer-bottom {
     padding-top: 1.75rem;
@@ -580,7 +578,7 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
     color: rgba(255,255,255,0.45); font-size: 0.85rem;
 }
 .footer-bottom a { color: rgba(255,255,255,0.5); }
-.footer-bottom a:hover { color: var(--bronze); }
+.footer-bottom a:hover { color: var(--paper); }
 
 /* ----- Reveal animation (subtle on load) ----------------------------- */
 @keyframes editorial-in {
