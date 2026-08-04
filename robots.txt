@@ -1,2 +1,13 @@
+# Preview build — indexing disabled.
+# For production: change "Disallow: /" to "Disallow: /admin/" only,
+# then also remove the <meta name="robots" content="noindex,nofollow"> block
+# from every HTML page (present in <head> of all 15 pages + 404 + admin/*).
+
 User-agent: *
 Disallow: /
+
+# Admin panel must stay disallowed even on production.
+User-agent: *
+Disallow: /admin/
+
+Sitemap: https://gustavo-git2806.github.io/tarlu-preview/sitemap.xml

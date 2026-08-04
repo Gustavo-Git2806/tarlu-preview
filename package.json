@@ -1,0 +1,17 @@
+{
+    "name": "tarlu-preview",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Tarlu editorial preview — static HTML/CSS/JS with admin panel.",
+    "scripts": {
+        "test:unit": "node --test tests/store.test.js tests/schema.test.js tests/sanitiser.test.js",
+        "test:e2e":  "node tests/e2e.smoke.js",
+        "test:a11y": "node tests/a11y.smoke.js",
+        "test":      "npm run test:unit"
+    },
+    "devDependencies": {
+        "@axe-core/playwright": "^4.10.0",
+        "linkedom":             "^0.18.0",
+        "playwright":           "^1.48.0"
+    }
+}

@@ -11,7 +11,7 @@
     --ink-90:     rgba(29, 30, 32, 0.9);
     --ink-70:     rgba(29, 30, 32, 0.7);
     --ink-50:     rgba(29, 30, 32, 0.5);
-    --muted:      #56585E;    /* muted text (from tarlu.com rgb(86,88,94)) */
+    --muted:      #4B5563;    /* darker muted for AA contrast (was #56585E) */
     --paper:      #FFFFFF;
     --stone:      #ECEFF3;    /* light section BG (from tarlu.com) */
     --stone-50:   #F5F6F8;    /* softer stone for subtle alternation */
@@ -27,9 +27,10 @@
     /* Dark = deep navy (was near-black, made visibly blue). */
     --dark:       var(--navy);
 
-    /* Gold accent (decorative italic, quotes). */
-    --gold:       #D4AF37;
-    --gold-600:   #A88A29;
+    /* Was gold — now Tarlu brand blue so all accents stay on-brand.
+       Aliases kept so existing rules continue to work without a rename. */
+    --gold:       #0075C2;
+    --gold-600:   #005E9C;
 
     --wrap:      1240px;
     --wrap-narrow: 780px;
@@ -620,9 +621,9 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 @media (max-width: 700px) { .cta-banner { border-radius: 20px; margin-inline: 1rem; } }
 .cta-banner h2 { max-width: 18ch; margin: 0 auto 1.5rem; color: var(--paper); }
 .cta-banner h2 em { color: rgba(255,255,255,0.85); }
-.cta-banner .lead { margin: 0 auto 2.5rem; max-width: 55ch; color: rgba(255,255,255,0.85); }
-.cta-banner .eyebrow { color: rgba(255,255,255,0.7); }
-.cta-banner .eyebrow::before { color: rgba(255,255,255,0.5); }
+.cta-banner .lead { margin: 0 auto 2.5rem; max-width: 55ch; color: rgba(255,255,255,0.95); }
+.cta-banner .eyebrow { color: rgba(255,255,255,0.95); }
+.cta-banner .eyebrow::before { color: rgba(255,255,255,0.75); }
 .cta-banner .btn-primary { background: var(--paper); color: var(--blue); border-color: var(--paper); }
 .cta-banner .btn-primary:hover { background: transparent; color: var(--paper); border-color: var(--paper); }
 
@@ -728,9 +729,9 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 .footer-bottom {
     padding-top: 1.75rem;
     display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
-    color: rgba(255,255,255,0.45); font-size: 0.85rem;
+    color: rgba(255,255,255,0.7); font-size: 0.85rem;
 }
-.footer-bottom a { color: rgba(255,255,255,0.5); }
+.footer-bottom a { color: rgba(255,255,255,0.85); text-decoration: underline; text-underline-offset: 2px; }
 .footer-bottom a:hover { color: var(--paper); }
 
 /* ----- Reveal animation (subtle on load) ----------------------------- */
@@ -780,3 +781,928 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 .text-center { text-align: center; }
 .mt-lg { margin-top: 3rem; }
 .mb-lg { margin-bottom: 3rem; }
+.mt-md { margin-top: 1.5rem; }
+.mb-md { margin-bottom: 1.5rem; }
+
+/* Cookie consent banner — bottom, non-blocking, dismissible.
+   Injected by consent.js once (first visit only). */
+.consent-banner {
+    position: fixed;
+    left: 1rem; right: 1rem; bottom: 1rem;
+    z-index: 60;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px -20px rgba(0, 26, 120, 0.5);
+    padding: 1rem 1.25rem;
+    animation: consent-slide-in 0.35s var(--ease) both;
+    max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+}
+@keyframes consent-slide-in {
+    from { transform: translateY(120%); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+.consent-inner {
+    display: flex; align-items: center; gap: 1.25rem;
+    flex-wrap: wrap;
+}
+.consent-msg {
+    flex: 1 1 320px;
+    margin: 0;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+.consent-msg strong { color: var(--paper); }
+.consent-msg a { color: var(--paper); border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 1px; }
+.consent-msg a:hover { border-color: var(--paper); }
+.consent-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+.consent-btn {
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.consent-btn-primary { background: var(--paper); color: var(--ink); }
+.consent-btn-primary:hover { background: var(--blue); color: var(--paper); }
+.consent-btn-ghost { background: transparent; color: rgba(255,255,255,0.95); border-color: rgba(255,255,255,0.35); }
+.consent-btn-ghost:hover { color: var(--paper); border-color: rgba(255,255,255,0.6); }
+@media (max-width: 560px) {
+    .consent-banner { left: 0.75rem; right: 0.75rem; bottom: 0.75rem; padding: 0.85rem 1rem; }
+    .consent-actions { width: 100%; }
+    .consent-btn { flex: 1; text-align: center; }
+}
+
+/* Services page scroll-spy sub-nav — 4 pill links that stick under the main
+   header once scrolled past the hero. IntersectionObserver in-page updates
+   which pill is .active as the reader crosses each group. */
+.services-spy {
+    position: sticky;
+    top: 0;
+    z-index: 9;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--hairline);
+    padding: 0.75rem 0;
+}
+.services-spy .wrap {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.services-spy .wrap::-webkit-scrollbar { display: none; }
+.services-spy-pill {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.55rem 1.15rem;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--paper);
+    white-space: nowrap;
+    transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+    text-decoration: none;
+}
+.services-spy-pill span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    transition: color var(--dur) var(--ease);
+}
+.services-spy-pill:hover { border-color: var(--ink-50); color: var(--ink); }
+.services-spy-pill.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+}
+.services-spy-pill.active span { color: rgba(255,255,255,0.85); }
+@media (max-width: 640px) {
+    .services-spy { padding: 0.5rem 0; }
+    .services-spy-pill { padding: 0.5rem 0.85rem; font-size: 0.78rem; }
+    .services-spy-pill span { font-size: 0.62rem; }
+}
+
+/* Enquiry form progress indicator — sticky under nav, 3 numbered steps + fill bar.
+   State classes: .active (current section in view), .done (already scrolled past). */
+.form-progress {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    padding: 1rem 1.25rem 0.85rem;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    position: sticky;
+    top: 1rem;
+    z-index: 8;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 24px -18px rgba(0, 26, 120, 0.35);
+}
+.form-progress-step {
+    display: flex; flex-direction: column; gap: 0.15rem;
+    padding: 0.3rem 0.5rem;
+    text-decoration: none;
+    color: var(--muted);
+    border-radius: 8px;
+    transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+    cursor: pointer;
+}
+.form-progress-step:hover { color: var(--ink); background: var(--stone-50); }
+.form-progress-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    font-weight: 500;
+    color: var(--muted);
+    transition: color var(--dur) var(--ease);
+}
+.form-progress-lbl {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--muted);
+    transition: color var(--dur) var(--ease);
+}
+.form-progress-step.done .form-progress-num,
+.form-progress-step.done .form-progress-lbl { color: var(--ink-70); }
+.form-progress-step.active .form-progress-num { color: var(--blue); font-weight: 600; }
+.form-progress-step.active .form-progress-lbl { color: var(--ink); font-weight: 600; }
+.form-progress-bar {
+    grid-column: 1 / -1;
+    height: 3px;
+    background: var(--stone);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 0.4rem;
+}
+.form-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--blue);
+    border-radius: 999px;
+    transition: width 350ms var(--ease);
+}
+@media (max-width: 640px) {
+    .form-progress { top: 0; border-radius: 0; margin-left: -1.15rem; margin-right: -1.15rem; }
+    .form-progress-lbl { font-size: 0.78rem; }
+    .form-progress-num { font-size: 0.62rem; }
+}
+
+/* Case study cards — replaces testimonial-only strip on the homepage. Each card
+   leads with a concrete metric (retention, accuracy, cut-off, etc.), then the
+   client + sector + quote. On the dark section, colours invert. */
+.case-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
+    margin-top: 2rem;
+}
+@media (max-width: 700px) { .case-grid { grid-template-columns: 1fr; } }
+
+.case-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 20px;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    display: flex; flex-direction: column;
+    gap: 1.15rem;
+    transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.case-card:hover {
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-3px);
+}
+
+.case-metric {
+    display: flex; flex-direction: column; gap: 0.15rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.case-metric-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.5rem, 2.4vw, 1.85rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    line-height: 1.15;
+}
+.case-metric-lbl {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.01em;
+    max-width: 32ch;
+}
+
+.case-summary { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+.case-summary strong {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    color: var(--paper);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+.case-sector {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    font-weight: 500;
+}
+
+.case-quote {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.85);
+    font-style: italic;
+    margin: 0;
+    position: relative;
+    padding-left: 1.25rem;
+}
+.case-quote::before {
+    content: '';
+    position: absolute; left: 0; top: 0.4em; bottom: 0.4em;
+    width: 3px; background: var(--blue); border-radius: 2px;
+}
+
+.case-author {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding-top: 0.5rem;
+    color: rgba(255,255,255,0.55);
+    font-size: 0.85rem;
+}
+/* .case-avatar renders as either:
+   - <span class="case-avatar" data-initials="BG"></span>  → monogram bubble (fallback)
+   - <img class="case-avatar" src="…" alt="…">              → real photo
+*/
+.case-avatar {
+    display: inline-grid; place-items: center;
+    width: 34px; height: 34px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50%;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.72rem;
+    color: var(--paper);
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+    overflow: hidden;
+    object-fit: cover;
+}
+.case-avatar[data-initials]::before {
+    content: attr(data-initials);
+}
+
+/* Credentials — 4 cert cards under the KPI strip on the homepage. Replaces
+   the old text-only trust bar; carries more visual weight and describes what
+   each accreditation actually unlocks for the client. */
+.credentials {
+    padding: clamp(3rem, 5vw, 4rem) 0;
+    background: var(--stone-50);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+}
+.credentials-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+@media (max-width: 1000px) { .credentials-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px)  { .credentials-grid { grid-template-columns: 1fr; gap: 1rem; } }
+
+.credential {
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.credential:hover { border-color: var(--ink-50); transform: translateY(-2px); }
+.credential-ico {
+    width: 36px; height: 36px;
+    color: var(--blue);
+    margin-bottom: 1rem;
+    display: block;
+}
+.credential h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 0.5rem;
+}
+.credential p {
+    font-size: 0.85rem;
+    color: var(--ink-70);
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* Recurring patterns extracted from inline styles across form pages */
+.section-tight { padding-top: 2.5rem; }
+.form-actions {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+}
+.form-note { color: var(--muted); font-size: 0.85rem; }
+/* <small> unit label inside a rate value ("/ hour", "/ label") */
+.rate-value small { color: var(--muted); font-weight: 400; }
+
+/* =============================================================================
+   Utility / hidden pages — rate tables, extended forms, legal docs, doc hero.
+   Applied by files not linked in the main nav (complaints, pricing, T&Cs).
+   ========================================================================== */
+
+/* ----- Doc hero ------------------------------------------------------- */
+/* Compact solid-colour hero for utility pages (no full-bleed image). */
+.doc-hero {
+    position: relative;
+    padding: clamp(6rem, 10vw, 9rem) 0 clamp(3rem, 5vw, 4rem);
+    background: var(--stone-50);
+    border-bottom: 1px solid var(--hairline);
+}
+.doc-hero .eyebrow { color: var(--muted); }
+.doc-hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4.25rem);
+    color: var(--ink);
+    max-width: 22ch;
+    margin-bottom: 1.25rem;
+}
+.doc-hero .lead { color: var(--ink-70); max-width: 62ch; }
+.doc-hero .doc-meta {
+    margin-top: 2rem;
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    font-size: 0.85rem; color: var(--muted);
+}
+.doc-hero .doc-meta strong { color: var(--ink); font-weight: 600; }
+
+/* ----- Rate tables (pricing) ---------------------------------------- */
+.rate-groups {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem) clamp(2.5rem, 5vw, 4.5rem);
+}
+@media (max-width: 800px) { .rate-groups { grid-template-columns: 1fr; } }
+
+.rate-group { break-inside: avoid; }
+.rate-group h3 {
+    font-family: 'Space Grotesk', -apple-system, sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--ink);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+}
+.rate-group h3 .rate-group-num {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.rate-table { list-style: none; padding: 0; margin: 0; }
+.rate-table li {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--hairline);
+    font-size: 0.98rem;
+}
+.rate-table li:last-child { border-bottom: 0; }
+.rate-table .rate-label { color: var(--ink); flex: 1; }
+.rate-table .rate-value {
+    font-family: 'Space Grotesk', -apple-system, sans-serif;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+}
+.rate-table .rate-value.free { color: var(--gold-600); }
+.rate-note {
+    margin-top: 1rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--stone-50);
+    border-left: 3px solid var(--gold-600);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+.rate-note strong { color: var(--ink); }
+
+/* Full-width rate group (single-column variant for long tables) */
+.rate-group.full { grid-column: 1 / -1; }
+
+/* ----- Extended form controls (radio / checkbox / select) ----------- */
+.field select {
+    padding: 0.9rem 1.1rem;
+    background: var(--stone-50);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 1.05rem;
+    transition: border-color var(--dur) var(--ease);
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2356585E'><path d='M10 13.5l-5-5 1.4-1.4L10 10.7l3.6-3.6L15 8.5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 18px;
+    padding-right: 2.75rem;
+    cursor: pointer;
+}
+.field select:hover { border-color: var(--ink-50); }
+.field select:focus { outline: 0; border-color: var(--ink); }
+
+.field-group { display: flex; flex-direction: column; gap: 0.6rem; }
+.field-group > label {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+}
+.opt {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--stone-50);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+    font-size: 0.95rem;
+    color: var(--ink);
+}
+.opt:hover { border-color: var(--ink-50); }
+.opt input[type="radio"], .opt input[type="checkbox"] {
+    margin-top: 0.15rem; flex-shrink: 0;
+    accent-color: var(--blue);
+    width: 18px; height: 18px;
+    cursor: pointer;
+}
+.opt input:checked + span,
+.opt:has(input:checked) { border-color: var(--ink); background: var(--paper); }
+.opt-inline { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.opt-inline .opt { flex: 1 1 auto; }
+
+.consent {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 1rem 1.15rem;
+    background: var(--stone-50);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    font-size: 0.9rem;
+    color: var(--ink-70);
+    line-height: 1.5;
+}
+.consent input { accent-color: var(--blue); width: 18px; height: 18px; margin-top: 0.15rem; flex-shrink: 0; cursor: pointer; }
+
+/* Fieldset that wraps a section of the form. */
+.form-section {
+    display: flex; flex-direction: column; gap: 1.25rem;
+    padding: 0;
+    border: 0;
+    margin: 0;
+}
+.form-section legend {
+    font-family: 'Space Grotesk', -apple-system, sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    padding: 0;
+}
+.form-section-num {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-600);
+    display: block;
+    margin-bottom: 0.35rem;
+}
+.form + .form-section, .form-section + .form-section {
+    padding-top: 2.25rem;
+    border-top: 1px solid var(--hairline);
+    margin-top: 0.5rem;
+}
+
+/* ----- Legal doc (T&Cs) -------------------------------------------- */
+.legal-doc {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+}
+@media (max-width: 900px) { .legal-doc { grid-template-columns: 1fr; } }
+.legal-toc {
+    position: sticky; top: 100px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding-right: 1rem;
+    font-size: 0.9rem;
+}
+@media (max-width: 900px) {
+    .legal-toc { position: static; max-height: none; padding: 0; }
+}
+.legal-toc h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 1rem;
+}
+.legal-toc ol { list-style: none; counter-reset: toc; padding: 0; margin: 0; }
+.legal-toc li { counter-increment: toc; margin: 0.4rem 0; }
+.legal-toc li::before {
+    content: counter(toc, decimal-leading-zero) ' ';
+    color: var(--gold-600);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    margin-right: 0.5rem;
+}
+.legal-toc a { color: var(--ink-70); transition: color var(--dur) var(--ease); }
+.legal-toc a:hover { color: var(--ink); }
+
+.legal-body { font-size: 1rem; line-height: 1.7; color: var(--ink); }
+.legal-body h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    letter-spacing: -0.015em;
+    margin: 3rem 0 1.25rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--hairline);
+}
+.legal-body h2:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+.legal-body h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 2rem 0 0.75rem;
+    color: var(--ink);
+}
+.legal-body p { color: var(--ink-70); font-size: 0.98rem; margin: 0 0 1rem; }
+.legal-body strong { color: var(--ink); font-weight: 600; }
+.legal-body ol, .legal-body ul { padding-left: 1.25rem; color: var(--ink-70); font-size: 0.98rem; }
+.legal-body li { margin: 0.5rem 0; }
+.legal-body dl { margin: 0 0 1.5rem; }
+.legal-body dt {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 1.25rem;
+    font-size: 1rem;
+}
+.legal-body dd { margin: 0.35rem 0 0; color: var(--ink-70); font-size: 0.98rem; }
+.legal-body .callout {
+    padding: 1rem 1.25rem;
+    background: var(--stone-50);
+    border-left: 3px solid var(--gold-600);
+    border-radius: 0 8px 8px 0;
+    color: var(--ink);
+    font-size: 0.95rem;
+    margin: 1.5rem 0 2rem;
+}
+.legal-body .clause-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    color: var(--gold-600);
+    margin-right: 0.5rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ----- Requirements checklist -------------------------------------- */
+.check-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+.check-list li {
+    display: flex; gap: 0.9rem; align-items: flex-start;
+    padding: 0.9rem 1.1rem;
+    background: var(--stone-50);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    font-size: 0.98rem;
+    color: var(--ink);
+}
+.check-list li::before {
+    content: '✓';
+    color: var(--gold-600);
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    flex-shrink: 0;
+}
+
+/* ----- Two-column info split (aside + text) ------------------------ */
+.doc-split {
+    display: grid;
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+}
+@media (max-width: 900px) { .doc-split { grid-template-columns: 1fr; } }
+.doc-split-aside {
+    padding: 1.5rem;
+    background: var(--stone-50);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    font-size: 0.92rem;
+    color: var(--ink-70);
+}
+.doc-split-aside h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 0.75rem;
+}
+.doc-split-aside p:last-child { margin-bottom: 0; }
+.doc-split-aside .aside-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    font-weight: 600;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+/* =============================================================================
+   Responsive — full-coverage breakpoint sweep.
+   Tiers: ≥1200 desktop · 900–1199 laptop · 640–899 tablet · <640 phone.
+   Order matches source cascade — later rules win where they overlap earlier ones.
+   ========================================================================== */
+
+/* Global — prevent long strings (URLs, code, addresses) from breaking layout */
+body { overflow-wrap: break-word; word-wrap: break-word; }
+h1, h2, h3, h4 { overflow-wrap: break-word; hyphens: manual; }
+.wrap, .wrap-narrow { max-width: 100%; }
+img, video, iframe { max-width: 100%; height: auto; }
+
+/* Tablet + small laptop -------------------------------------------- */
+@media (max-width: 1024px) {
+    section { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+    /* Markets grid — bento becomes even 2-col grid */
+    .markets-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: minmax(200px, auto);
+    }
+    .markets-grid > * { grid-column: span 1 !important; grid-row: span 1 !important; }
+    /* Split section stacks under 1000px */
+    .split { grid-template-columns: 1fr; gap: 2rem; }
+    .split-image { aspect-ratio: 16/10; }
+    /* Market rows stack image + text */
+    .market-row { grid-template-columns: 1fr; gap: 1.25rem; }
+    .market-row:nth-child(even) .market-row-image { order: 0; transform: none; }
+    .market-row:nth-child(odd) .market-row-image { transform: none; }
+    .market-row-image { aspect-ratio: 16/10; }
+}
+
+/* Small tablet ------------------------------------------------------- */
+@media (max-width: 900px) {
+    /* Header eases in gap so brand + toggle fit */
+    .site-header .wrap { gap: 1rem; }
+    .brand img { height: 34px; }
+    /* Legal doc TOC moves above body (grid rule already at 900 elsewhere) */
+    .legal-body { font-size: 0.95rem; }
+    .legal-body h2 { margin-top: 2.25rem; padding-top: 1.5rem; }
+    /* Section head centred padding */
+    .section-head { margin-bottom: 2.5rem; }
+    /* Testimonial grid stack */
+    .testimonial-grid { grid-template-columns: 1fr; }
+    /* Rate group grid already stacks below 800 */
+    /* Kpi strip: reduce internal padding */
+    .kpi-strip > .wrap > div { padding: 0.35rem 1rem; }
+}
+
+/* Mobile nav & hero — already handled at 800, but extend adjustments */
+@media (max-width: 800px) {
+    /* Doc hero pad + heading trim */
+    .doc-hero { padding: clamp(4.5rem, 12vw, 6rem) 0 clamp(2rem, 5vw, 3rem); }
+    .doc-hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
+    .doc-hero .lead { font-size: clamp(1rem, 3.4vw, 1.15rem); }
+    .doc-meta { gap: 1rem; font-size: 0.8rem; }
+    /* Rate table already 1-col at 800 (rate-groups rule) */
+    /* Kpi strip: allow stacking to 2×2 on tight phones */
+    .kpi-strip .wrap { flex-wrap: wrap; row-gap: 1.25rem; }
+    .kpi-strip > .wrap > div { flex: 1 1 45%; }
+    .kpi-strip > .wrap > div + div { border-left: 0; }
+    .kpi-num { font-size: clamp(1.8rem, 6vw, 2.4rem); }
+    /* Trust bar wraps */
+    .trust-inner { flex-wrap: wrap; gap: 0.75rem 1.5rem; }
+    /* Form section grid to 1 col */
+    .form-grid { grid-template-columns: 1fr; }
+    /* Opt-inline (radio pills) allow full width */
+    .opt-inline .opt { flex: 1 1 100%; }
+    /* Service group head stacks */
+    .service-group-head { grid-template-columns: 1fr; gap: 0.5rem; }
+    .service-list { grid-template-columns: 1fr; }
+    /* CTA banner: reduce padding */
+    .cta-banner { padding: clamp(3rem, 8vw, 5rem) 0; }
+    /* Footer: stack address block */
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+}
+
+/* Phone -------------------------------------------------------------- */
+@media (max-width: 560px) {
+    :root { --wrap: 100%; }
+    .wrap { padding: 0 1.15rem; }
+    section { padding: 3rem 0; }
+    /* Nav toggle stays right — brand shrinks */
+    .brand img { height: 30px; }
+    /* Hero heading — allow to break natural */
+    .hero-content h1 { font-size: clamp(2.1rem, 9vw, 3.2rem); }
+    .hero-content .lead { font-size: 1rem; }
+    .hero-cta { flex-direction: column; align-items: stretch; }
+    .hero-cta .btn { justify-content: center; }
+    /* Doc hero */
+    .doc-hero { padding: 4rem 0 2rem; }
+    .doc-hero h1 { font-size: clamp(1.85rem, 8vw, 2.5rem); max-width: 100%; }
+    /* Section head */
+    .section-head h2 { font-size: clamp(1.65rem, 7vw, 2.2rem); }
+    /* Markets — single column */
+    .markets-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .markets-grid > * { grid-column: 1 !important; }
+    .market-card { min-height: 260px; }
+    .market-card h3 { font-size: 1.35rem; }
+    /* Rate tables — force wrap on long labels */
+    .rate-table li { flex-wrap: wrap; gap: 0.35rem 1rem; padding: 0.75rem 0; }
+    .rate-table .rate-value { font-size: 0.95rem; }
+    .rate-group h3 { flex-wrap: wrap; gap: 0.5rem; font-size: 1.2rem; }
+    /* Doc split aside becomes full-width */
+    .doc-split-aside { padding: 1.15rem; }
+    /* Testimonials */
+    .testimonial-quote { font-size: 1.05rem; }
+    /* Buttons full-width where they'd overflow */
+    .btn { padding: 0.9rem 1.25rem; font-size: 0.9rem; }
+    /* Form controls */
+    .field input, .field textarea, .field select { font-size: 1rem; padding: 0.85rem 1rem; }
+    /* Section legend size */
+    .form-section legend { font-size: 1.15rem; }
+    /* Contact info block: smaller values */
+    .info-block a, .info-block address { font-size: 1.05rem; }
+    /* Location list */
+    .location-list li { padding: 0.85rem 1rem; }
+    .location-list li strong { font-size: 0.9rem; }
+    .location-list li span { font-size: 0.85rem; }
+    /* Legal doc callout */
+    .legal-body .callout { padding: 0.85rem 1rem; font-size: 0.9rem; }
+    /* Contact layout — already 1-col at 900. Reduce gap. */
+    .contact-layout { gap: 2rem; }
+    /* Trust bar becomes even smaller */
+    .trust-inner { font-size: 0.75rem; padding: 0.75rem 0; }
+    /* Site header — reduce padding */
+    .site-header .wrap { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    /* Footer brand image smaller */
+    .footer-brand .brand img { height: 36px; }
+}
+
+/* Ultra-narrow (older iPhone SE — 320px) -------------------------- */
+@media (max-width: 380px) {
+    .wrap { padding: 0 0.9rem; }
+    .hero-content h1 { font-size: 1.95rem; }
+    .doc-hero h1 { font-size: 1.7rem; }
+    .section-head h2 { font-size: 1.55rem; }
+    .btn { padding: 0.85rem 1.1rem; font-size: 0.88rem; }
+    .kpi-num { font-size: 1.6rem; }
+    .rate-group h3 { font-size: 1.1rem; }
+    .rate-table li { font-size: 0.92rem; }
+    /* Kpi strip goes to 1 col if 45% won't fit */
+    .kpi-strip > .wrap > div { flex-basis: 100%; }
+    /* Nav CTA — smaller pill */
+    .nav-cta { font-size: 0.9rem; padding: 0.6rem 1.15rem; }
+}
+
+/* High-density landscape phones (max-height guardrail) ------------ */
+@media (max-height: 500px) and (orientation: landscape) {
+    /* Fixed mobile nav overlay: allow scroll */
+    .nav.open { overflow-y: auto; padding: 2rem 1rem; }
+    .nav a { font-size: 1.35rem; }
+    .hero { min-height: auto; }
+    .hero-image { aspect-ratio: 21/9; }
+}
+
+/* Reduce motion — respect user preference (already global at top) --- */
+@media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-2, .reveal-3, .consent-banner { animation: none !important; }
+    .market-card, .market-row-image { transition: none; }
+    /* Ensure any element that starts hidden ends up visible */
+    .reveal, .reveal-2, .reveal-3 { opacity: 1; transform: none; }
+    .consent-banner { transform: translateY(0); opacity: 1; }
+}
+
+/* =============================================================================
+   Print — optimised for legal doc (T&Cs) but sane for any page.
+   Hides chrome (nav / footer / TOC), forces readable black-on-white typography,
+   avoids clause-breaks mid-page, and prints the URL at the top so the
+   printed copy can be traced back to source.
+   ========================================================================== */
+@media print {
+    @page { margin: 18mm 16mm; size: A4; }
+
+    /* Kill interactive chrome */
+    .site-header, .site-footer, .nav-toggle,
+    .cta-banner, .skip-link,
+    .legal-toc, .doc-hero .doc-meta,
+    .btn, .link-underline { display: none !important; }
+
+    /* Neutralise brand colour bloat — save toner */
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 10.5pt;
+        line-height: 1.5;
+    }
+    a { color: #000 !important; text-decoration: none !important; }
+    /* Show inline link targets on paper */
+    .legal-body a[href^="http"]::after,
+    .legal-body a[href^="mailto:"]::after,
+    .legal-body a[href^="tel:"]::after {
+        content: ' (' attr(href) ')';
+        font-size: 0.85em;
+        color: #555;
+    }
+    a[href^="#"]::after { content: ''; }
+
+    /* Doc hero collapses to a compact header block */
+    .doc-hero {
+        background: transparent !important;
+        border: 0 !important;
+        padding: 0 0 0.75rem !important;
+        page-break-after: avoid;
+    }
+    .doc-hero h1 {
+        font-size: 20pt !important;
+        margin: 0 0 0.3rem !important;
+        color: #000 !important;
+    }
+    .doc-hero .eyebrow { font-size: 8pt !important; color: #555 !important; letter-spacing: 0.12em; }
+    .doc-hero .lead { font-size: 10.5pt !important; color: #333 !important; max-width: 100% !important; }
+
+    /* Legal body — occupy the full page, no grid */
+    .legal-doc { display: block !important; }
+    .legal-body { font-size: 10pt !important; color: #000 !important; }
+    .legal-body h2 {
+        font-size: 13pt !important;
+        margin: 1.5rem 0 0.5rem !important;
+        padding: 0.5rem 0 0 !important;
+        border-top: 1px solid #999 !important;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+    }
+    .legal-body h2:first-child { border-top: 0 !important; }
+    .legal-body h3 {
+        font-size: 11pt !important;
+        margin: 0.85rem 0 0.35rem !important;
+        page-break-after: avoid;
+    }
+    .legal-body p, .legal-body dt, .legal-body dd, .legal-body li {
+        color: #000 !important;
+        orphans: 3; widows: 3;
+        page-break-inside: avoid;
+    }
+    .legal-body .callout {
+        background: transparent !important;
+        border: 1px solid #999 !important;
+        border-left: 3px solid #000 !important;
+        padding: 0.5rem 0.75rem !important;
+        color: #000 !important;
+    }
+    .legal-body .clause-num { color: #555 !important; }
+
+    /* Section paddings collapse */
+    section { padding: 0.5rem 0 !important; }
+    .wrap { padding: 0 !important; max-width: 100% !important; }
+
+    /* Rate tables — print as tight text rows */
+    .rate-groups { grid-template-columns: 1fr !important; gap: 0.5rem !important; }
+    .rate-table li { padding: 0.25rem 0 !important; font-size: 9.5pt !important; }
+    .rate-value { font-weight: 600 !important; }
+
+    /* Backgrounds should not print by default; but ensure images if needed */
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    /* Force page break before big new clauses in T&Cs */
+    .legal-body h2[id^="clause-"] { page-break-before: auto; }
+    /* Callout that flags clause 16 — keep with next heading */
+    .legal-body .callout + h2 { page-break-before: avoid; }
+}

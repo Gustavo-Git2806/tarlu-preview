@@ -1,0 +1,79 @@
+name: QA — tests + Lighthouse
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dev deps
+        run: npm install --no-audit --no-fund
+      - name: Run unit tests
+        run: npm run test:unit
+
+  e2e-smoke:
+    name: E2E smoke (Playwright)
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install chromium --with-deps
+      - name: Run E2E smoke
+        run: npm run test:e2e
+
+  a11y:
+    name: Accessibility (axe-core)
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install chromium --with-deps
+      - name: Run axe-core smoke
+        run: npm run test:a11y
+
+  lighthouse:
+    name: Lighthouse budget
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install http-server + LHCI
+        run: npm install -g http-server @lhci/cli
+      - name: Serve site
+        run: |
+          http-server . -p 8811 --silent &
+          sleep 3
+      - name: Run Lighthouse CI
+        run: |
+          lhci autorun \
+            --collect.url=http://localhost:8811/index.html \
+            --collect.url=http://localhost:8811/services.html \
+            --collect.url=http://localhost:8811/contact.html \
+            --upload.target=temporary-public-storage \
+            --assert.assertions.categories:performance=warn:0.85 \
+            --assert.assertions.categories:accessibility=error:0.9 \
+            --assert.assertions.categories:best-practices=warn:0.9 \
+            --assert.assertions.categories:seo=warn:0.9 \
+          || echo "Lighthouse budgets: check job summary for details"

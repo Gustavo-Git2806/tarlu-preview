@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Edit page — Tarlu Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/admin.css">
+<link rel="icon" href="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=64/mp8JxO6q3MTPNqDR/tarlu_nav_logo.3x-mk3JeXBqJKsKOvW4.png">
+</head>
+<body>
+
+<div id="editor-root">
+    <div class="a-card">
+        <span class="a-skeleton a-skeleton-h" style="width:60%; height:2em;"></span>
+        <span class="a-skeleton a-skeleton-block" style="width:75%;"></span>
+        <span class="a-skeleton a-skeleton-block" style="width:40%; margin-top:1.5rem;"></span>
+        <span class="a-skeleton a-skeleton-block" style="height:2.5em;"></span>
+        <span class="a-skeleton a-skeleton-block" style="width:40%; margin-top:1rem;"></span>
+        <span class="a-skeleton a-skeleton-block" style="height:2.5em;"></span>
+        <span class="a-skeleton a-skeleton-block" style="width:40%; margin-top:1rem;"></span>
+        <span class="a-skeleton a-skeleton-block" style="height:5em;"></span>
+    </div>
+</div>
+
+<script src="assets/js/store.js"></script>
+<script src="data/pages.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+    (async function () {
+        if (!(await window.TarluAdmin.requireAuth())) return;
+        window.TarluAdmin.mountShell({ active: 'pages' });
+
+        var params = new URLSearchParams(window.location.search);
+        var slug = params.get('page');
+        var root = document.getElementById('editor-root');
+
+        if (!slug) {
+            root.innerHTML = '<div class="a-card"><div class="a-alert a-alert-danger">No page specified. <a href="pages.html">Back to pages</a>.</div></div>';
+            return;
+        }
+
+        var schema;
+        try {
+            schema = await window.TarluAdmin.loadSchema();
+        } catch (err) {
+            root.innerHTML = '<div class="a-card"><div class="a-alert a-alert-danger">Failed to load schema: ' + window.TarluAdmin.escapeHtml(err.message) + '</div></div>';
+            return;
+        }
+
+        var page = null;
+        var groupLabel = null;
+        schema.groups.forEach(function (g) {
+            g.pages.forEach(function (p) {
+                if (p.slug === slug) { page = p; groupLabel = g.label; }
+            });
+        });
+        if (!page) {
+            root.innerHTML = '<div class="a-card"><div class="a-alert a-alert-danger">Page "<code>' + window.TarluAdmin.escapeHtml(slug) + '</code>" not found. <a href="pages.html">Back to pages</a>.</div></div>';
+            return;
+        }
+
+        var currentEdits = window.TarluStore.loadPage(slug);
+
+        // Render header
+        var header = '<div class="a-header">' +
+                     '<div>' +
+                     '<div class="a-crumb"><a href="pages.html">Pages</a><span class="a-crumb-sep">/</span>' + window.TarluAdmin.escapeHtml(groupLabel) + '</div>' +
+                     '<h1 style="margin-top:0.4rem;">' + window.TarluAdmin.escapeHtml(page.title) + '</h1>' +
+                     '<p>Edit any field below. Changes are saved locally until you export them.</p>' +
+                     '</div>' +
+                     '<div style="display:flex; gap:0.5rem; align-items:flex-start;">' +
+                     '<a class="a-btn" href="../' + window.TarluAdmin.escapeHtml(page.file) + '" target="_blank" rel="noopener">Preview page</a>' +
+                     '<span class="a-badge a-badge-' + page.visibility + '" style="align-self:center;">' + page.visibility + '</span>' +
+                     '</div>' +
+                     '</div>';
+
+        // Toolbar
+        var toolbar = '<div class="a-toolbar">' +
+                      '<div class="a-toolbar-left">' +
+                        '<span id="dirty-count" style="font-size:0.85rem; color:var(--a-muted);">All changes saved</span>' +
+                      '</div>' +
+                      '<div class="a-toolbar-right">' +
+                        '<button class="a-btn a-btn-danger" id="reset-btn" title="Revert to defaults">Reset</button>' +
+                        '<button class="a-btn a-btn-primary" id="save-btn">Save changes</button>' +
+                      '</div>' +
+                      '</div>';
+
+        // Field forms
+        var fieldsHtml = '<form class="a-card a-form" id="edit-form">';
+        page.fields.forEach(function (f, idx) {
+            var currentVal = Object.prototype.hasOwnProperty.call(currentEdits, f.key) ? currentEdits[f.key] : f.default;
+            var isDirty = Object.prototype.hasOwnProperty.call(currentEdits, f.key) && currentEdits[f.key] !== f.default;
+            var control = '';
+            var id = 'f-' + idx;
+            if (f.type === 'textarea') {
+                control = '<textarea id="' + id + '" data-key="' + window.TarluAdmin.escapeHtml(f.key) + '" data-default="' + window.TarluAdmin.escapeHtml(f.default) + '">' + window.TarluAdmin.escapeHtml(currentVal) + '</textarea>';
+            } else {
+                control = '<input id="' + id + '" data-key="' + window.TarluAdmin.escapeHtml(f.key) + '" data-default="' + window.TarluAdmin.escapeHtml(f.default) + '" type="text" value="' + window.TarluAdmin.escapeHtml(currentVal) + '">';
+            }
+            var hint = '';
+            if (f.type === 'html-line') {
+                hint = '<div class="a-hint">HTML allowed — e.g. <code>&lt;em&gt;emphasis&lt;/em&gt;</code> for the gold italic accent.</div>';
+            } else {
+                hint = '<div class="a-hint">Default: <code>' + window.TarluAdmin.escapeHtml(f.default) + '</code></div>';
+            }
+            fieldsHtml += '<div class="a-field' + (isDirty ? ' dirty' : '') + '" data-field="' + window.TarluAdmin.escapeHtml(f.key) + '">' +
+                          '<label for="' + id + '">' + window.TarluAdmin.escapeHtml(f.label) + '</label>' +
+                          control +
+                          hint +
+                          '</div>';
+        });
+        fieldsHtml += '</form>';
+
+        root.innerHTML = header + toolbar + fieldsHtml +
+                        '<div class="a-card"><div class="a-alert a-alert-info"><strong>How this works:</strong> ' +
+                        'Changes are saved to your browser only. The public page loads them via <code>assets/js/edits.js</code>, so anyone opening ' +
+                        '<a href="../' + window.TarluAdmin.escapeHtml(page.file) + '" target="_blank" rel="noopener">' + window.TarluAdmin.escapeHtml(page.file) + '</a> in this browser will see the edited version. ' +
+                        'To publish across the site, use <strong>Export edits</strong> on the dashboard and commit the JSON to the repo.</div></div>';
+
+        var dirty = {}; // key -> pending value
+        function markDirty() {
+            var count = Object.keys(dirty).length;
+            var el = document.getElementById('dirty-count');
+            el.textContent = count === 0 ? 'All changes saved' : (count + ' unsaved change' + (count > 1 ? 's' : ''));
+            el.style.color = count === 0 ? 'var(--a-muted)' : 'var(--a-amber)';
+        }
+
+        // Wire inputs
+        document.querySelectorAll('#edit-form [data-key]').forEach(function (input) {
+            input.addEventListener('input', function () {
+                var key = input.getAttribute('data-key');
+                var def = input.getAttribute('data-default');
+                var val = input.value;
+                var fieldWrap = input.closest('.a-field');
+                if (val === def && !Object.prototype.hasOwnProperty.call(currentEdits, key)) {
+                    delete dirty[key];
+                    fieldWrap.classList.remove('dirty');
+                } else if (val === (Object.prototype.hasOwnProperty.call(currentEdits, key) ? currentEdits[key] : def)) {
+                    delete dirty[key];
+                    fieldWrap.classList.toggle('dirty', val !== def);
+                } else {
+                    dirty[key] = val;
+                    fieldWrap.classList.add('dirty');
+                }
+                markDirty();
+            });
+        });
+
+        // Save
+        document.getElementById('save-btn').addEventListener('click', function () {
+            // Merge dirty into currentEdits, drop any equal to default
+            Object.keys(dirty).forEach(function (k) { currentEdits[k] = dirty[k]; });
+            // Prune keys equal to default (keeps store clean)
+            page.fields.forEach(function (f) {
+                if (Object.prototype.hasOwnProperty.call(currentEdits, f.key) && currentEdits[f.key] === f.default) {
+                    delete currentEdits[f.key];
+                }
+            });
+            if (Object.keys(currentEdits).length) {
+                window.TarluStore.savePage(slug, currentEdits);
+            } else {
+                window.TarluStore.clearPage(slug);
+            }
+            dirty = {};
+            markDirty();
+            document.querySelectorAll('#edit-form .a-field').forEach(function (fw) {
+                var input = fw.querySelector('[data-key]');
+                if (!input) return;
+                var key = input.getAttribute('data-key');
+                var def = input.getAttribute('data-default');
+                var edited = Object.prototype.hasOwnProperty.call(currentEdits, key);
+                fw.classList.toggle('dirty', edited);
+            });
+            window.TarluAdmin.toast('Changes saved.', 'success');
+        });
+
+        // Reset
+        document.getElementById('reset-btn').addEventListener('click', function () {
+            if (!confirm('Reset this page to its default content? Any unsaved changes will be lost.')) return;
+            window.TarluStore.clearPage(slug);
+            currentEdits = {};
+            dirty = {};
+            document.querySelectorAll('#edit-form [data-key]').forEach(function (input) {
+                input.value = input.getAttribute('data-default');
+                var fw = input.closest('.a-field');
+                fw.classList.remove('dirty');
+            });
+            markDirty();
+            window.TarluAdmin.toast('Page reset to defaults.', 'success');
+        });
+
+        // Warn on unload if dirty
+        window.addEventListener('beforeunload', function (e) {
+            if (Object.keys(dirty).length) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<link rel="preconnect" href="https://assets.zyrosite.com">
+<link rel="dns-prefetch" href="https://assets.zyrosite.com">
+<meta name="robots" content="noindex,nofollow">
+<title>Agency Request — Tarlu</title>
+<meta name="description" content="Internal request form for booking additional agency labour hours against a client account.">
+<link rel="canonical" href="https://gustavo-git2806.github.io/tarlu-preview/agency-request.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tarlu">
+<meta property="og:title" content="Agency Request — Tarlu">
+<meta property="og:description" content="Internal request form for booking additional agency labour hours against a client account.">
+<meta property="og:image" content="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1200,h=630,fit=crop/mp8JxO6q3MTPNqDR/head-image-YleQ1j0KaDcQl4nq.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://gustavo-git2806.github.io/tarlu-preview/agency-request.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Agency Request — Tarlu">
+<meta name="twitter:description" content="Internal request form for booking additional agency labour hours against a client account.">
+<meta name="twitter:image" content="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1200,h=630,fit=crop/mp8JxO6q3MTPNqDR/head-image-YleQ1j0KaDcQl4nq.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tarlu-v3.css">
+<link rel="icon" href="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=64/mp8JxO6q3MTPNqDR/tarlu_nav_logo.3x-mk3JeXBqJKsKOvW4.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#001A78">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+    <div class="wrap">
+        <a href="index.html" class="brand" aria-label="Tarlu home"><img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,h=80/mp8JxO6q3MTPNqDR/tarlu_nav_logo.3x-mk3JeXBqJKsKOvW4.png" alt="Tarlu" height="40"></a>
+        <nav class="nav" data-nav>
+            <a href="index.html">Home</a>
+            <a href="services.html">Services</a>
+            <a href="markets.html">Markets</a>
+            <a href="contact.html">Contact</a>
+            <a href="contact.html" class="nav-cta">Get a quote</a>
+        </nav>
+        <button class="nav-toggle" data-nav-toggle aria-label="Toggle menu"><span></span></button>
+    </div>
+</header>
+
+<main id="main">
+
+    <section class="doc-hero">
+        <div class="wrap">
+            <span class="eyebrow" data-edit-key="hero.eyebrow">Internal · operations</span>
+            <h1 class="reveal" data-edit-key="hero.title" data-edit-html="1">Agency request.</h1>
+            <p class="lead reveal reveal-2" data-edit-key="hero.lead">Book additional agency labour hours against a client account. Please complete all fields — incomplete requests will be returned to the requester.</p>
+            <div class="doc-meta reveal reveal-3">
+                <span><strong>Approval</strong> · Site manager + ops director</span>
+                <span><strong>Rate</strong> · <span data-edit-key="meta.rate">£20 per agency hour</span></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-tight">
+        <div class="wrap wrap-narrow">
+
+            <form class="form reveal" data-form="agency-request" >
+
+                <fieldset class="form-section">
+                    <legend><span class="form-section-num">— Section 01</span>Requester</legend>
+                    <div class="form-grid">
+                        <div class="field full">
+                            <label for="a-by">Request made by *</label>
+                            <input id="a-by" name="requested_by" type="text" required>
+                        </div>
+                        <div class="field">
+                            <label for="a-warehouse">Warehouse requesting *</label>
+                            <select id="a-warehouse" name="warehouse" required>
+                                <option value="">Select site…</option>
+                                <option>Nimrod Way (UK)</option>
+                                <option>Throop (UK)</option>
+                                <option>Dawkins Road (UK)</option>
+                                <option>Factory Road — Main Warehouse (UK)</option>
+                                <option>Factory Road — New You Plan (UK)</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="a-client">Client code *</label>
+                            <input id="a-client" name="client_code" type="text" required>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-section">
+                    <legend><span class="form-section-num">— Section 02</span>Justification</legend>
+                    <div class="field">
+                        <label for="a-reason">Reason for additional labour *</label>
+                        <textarea id="a-reason" name="reason" required placeholder="Peak volume, backlog clearance, kitting project, specific SKU / ASN…"></textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-section">
+                    <legend><span class="form-section-num">— Section 03</span>Charging</legend>
+
+                    <div class="field-group">
+                        <label>How will the client be charged? *</label>
+                        <label class="opt"><input type="radio" name="charge_method" value="auto" required> <span>Via automated billing</span></label>
+                        <label class="opt"><input type="radio" name="charge_method" value="labour"> <span>Additional invoice item — labour hours</span></label>
+                        <label class="opt"><input type="radio" name="charge_method" value="fixed"> <span>Additional invoice item — fixed fee</span></label>
+                        <label class="opt"><input type="radio" name="charge_method" value="combo"> <span>Combination of the above</span></label>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="a-applier">Who will apply the charge to the account? *</label>
+                            <input id="a-applier" name="applied_by" type="text" required>
+                        </div>
+                        <div class="field">
+                            <label for="a-revenue">Revenue expected (£) *</label>
+                            <input id="a-revenue" name="revenue" type="number" min="0" step="0.01" required>
+                        </div>
+                        <div class="field">
+                            <label for="a-charge-date">Charge date *</label>
+                            <input id="a-charge-date" name="charge_date" type="date" required>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-section">
+                    <legend><span class="form-section-num">— Section 04</span>Hours &amp; margin</legend>
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="a-hours">Agency hours requested *</label>
+                            <input id="a-hours" name="hours" type="number" min="0" step="0.5" required>
+                        </div>
+                        <div class="field">
+                            <label for="a-cost">Total cost @ £20 / hour</label>
+                            <input id="a-cost" name="cost" type="text" placeholder="Auto-calculated on submit" readonly style="background:var(--stone);">
+                        </div>
+                        <div class="field full">
+                            <label for="a-timeline">Timeline — start &amp; completion dates *</label>
+                            <input id="a-timeline" name="timeline" type="text" required placeholder="e.g. 10 Aug – 24 Aug 2026">
+                        </div>
+                        <div class="field full">
+                            <label for="a-margin">Expected gross margin per job *</label>
+                            <input id="a-margin" name="margin" type="text" required placeholder="£ or %">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <label class="consent">
+                    <input type="checkbox" required>
+                    <span>I acknowledge that I am responsible for ensuring the requested agency hours are necessary, correctly costed, and that the client is aware of the charge before it is applied.</span>
+                </label>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Submit request <span class="arrow">→</span></button>
+                    <small class="form-note">Preview build · form disabled</small>
+                </div>
+            </form>
+
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="wrap">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand"><img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,h=88/mp8JxO6q3MTPNqDR/tarlu_nav_logo.3x-mk3JeXBqJKsKOvW4.png" alt="Tarlu" height="44" loading="lazy" decoding="async"></div>
+                <p>Fulfilment partner for ambitious brands.</p>
+            </div>
+            <div class="footer-col">
+                <h5>Explore</h5>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="markets.html">Markets</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Get in touch</h5>
+                <ul>
+                    <li><a href="mailto:enquiries@tarlu.com">enquiries@tarlu.com</a></li>
+                    <li><a href="tel:+443302232218">+44 (0) 330 223 2218</a></li>
+                    <li>Mon–Fri · 9am – 5pm GMT</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Head office</h5>
+                <ul>
+                    <li>17 Factory Road</li>
+                    <li>Poole, Dorset, BH16 5SN</li>
+                    <li>United Kingdom</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Tarlu Ltd. All rights reserved.</span>
+            <span>Preview build</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+const navToggle = document.querySelector('[data-nav-toggle]');
+const nav = document.querySelector('[data-nav]');
+if (navToggle && nav) {
+    navToggle.addEventListener('click', () => {
+        nav.classList.toggle('open');
+        document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
+    });
+    nav.querySelectorAll('a').forEach(a =>
+        a.addEventListener('click', () => { nav.classList.remove('open'); document.body.style.overflow = ''; })
+    );
+}
+</script>
+<script src="assets/js/edits.js"></script>
+<script src="assets/js/consent.js"></script>
+<script src="assets/js/analytics.js"></script>
+<script src="assets/js/supabase.js"></script>
+<script src="assets/js/forms.js"></script>
+</body>
+</html>

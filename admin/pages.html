@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>All pages — Tarlu Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/admin.css">
+<link rel="icon" href="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=64/mp8JxO6q3MTPNqDR/tarlu_nav_logo.3x-mk3JeXBqJKsKOvW4.png">
+</head>
+<body>
+
+<div class="a-header">
+    <div>
+        <h1>All pages</h1>
+        <p>Edit any page on the Tarlu site. Public pages appear in the main menu; hidden pages are accessed by direct URL.</p>
+    </div>
+</div>
+
+<div id="pages-container">
+    <div class="a-card">
+        <span class="a-skeleton a-skeleton-h"></span>
+        <div class="a-skeleton-row"><span class="a-skeleton"></span><span class="a-skeleton"></span><span class="a-skeleton"></span><span class="a-skeleton"></span></div>
+        <div class="a-skeleton-row"><span class="a-skeleton"></span><span class="a-skeleton"></span><span class="a-skeleton"></span><span class="a-skeleton"></span></div>
+        <div class="a-skeleton-row"><span class="a-skeleton"></span><span class="a-skeleton"></span><span class="a-skeleton"></span><span class="a-skeleton"></span></div>
+    </div>
+</div>
+
+<script src="assets/js/store.js"></script>
+<script src="data/pages.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+    (async function () {
+        if (!(await window.TarluAdmin.requireAuth())) return;
+        window.TarluAdmin.mountShell({ active: 'pages' });
+
+        try {
+            var schema = await window.TarluAdmin.loadSchema();
+            var edits = window.TarluStore.loadAll();
+            var container = document.getElementById('pages-container');
+            var html = '';
+
+            schema.groups.forEach(function (group) {
+                html += '<div class="a-card a-group">' +
+                        '<div class="a-group-head">' +
+                            '<h3>' + window.TarluAdmin.escapeHtml(group.label) + '</h3>' +
+                            '<span>' + group.pages.length + ' page' + (group.pages.length > 1 ? 's' : '') + '</span>' +
+                        '</div>' +
+                        '<div class="a-table-wrap"><table class="a-table"><thead><tr>' +
+                            '<th style="width:40%;">Page</th>' +
+                            '<th>Visibility</th>' +
+                            '<th>Fields</th>' +
+                            '<th>Status</th>' +
+                            '<th style="text-align:right;">Actions</th>' +
+                        '</tr></thead><tbody>';
+
+                group.pages.forEach(function (p) {
+                    var pageEdits = edits[p.slug];
+                    var editedCount = pageEdits ? Object.keys(pageEdits).length : 0;
+                    var status = editedCount
+                        ? '<span class="a-badge a-badge-draft">Unpublished</span>'
+                        : '<span class="a-badge a-badge-published">Published</span>';
+                    html += '<tr>' +
+                            '<td>' +
+                                '<div class="a-cell-title">' + window.TarluAdmin.escapeHtml(p.title) + '</div>' +
+                                '<div class="a-cell-sub">/' + window.TarluAdmin.escapeHtml(p.slug) + '.html</div>' +
+                            '</td>' +
+                            '<td><span class="a-badge a-badge-' + p.visibility + '">' + p.visibility + '</span></td>' +
+                            '<td>' + p.fields.length + ' editable' + (editedCount ? ' · <strong>' + editedCount + ' changed</strong>' : '') + '</td>' +
+                            '<td>' + status + '</td>' +
+                            '<td class="a-actions">' +
+                                '<a class="a-btn a-btn-ghost" href="../' + window.TarluAdmin.escapeHtml(p.file) + '" target="_blank" rel="noopener">Preview</a>' +
+                                '<a class="a-btn" href="edit.html?page=' + encodeURIComponent(p.slug) + '">Edit</a>' +
+                            '</td>' +
+                            '</tr>';
+                });
+
+                html += '</tbody></table></div></div>';
+            });
+
+            container.innerHTML = html;
+        } catch (err) {
+            document.getElementById('pages-container').innerHTML =
+                '<div class="a-card"><div class="a-alert a-alert-danger">Failed to load pages: ' + window.TarluAdmin.escapeHtml(err.message) + '</div></div>';
+        }
+    })();
+</script>
+
+</body>
+</html>

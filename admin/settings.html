@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Settings — Tarlu Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/admin.css">
+<link rel="icon" href="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=64/mp8JxO6q3MTPNqDR/tarlu_nav_logo.3x-mk3JeXBqJKsKOvW4.png">
+</head>
+<body>
+
+<div class="a-header">
+    <div>
+        <h1>Settings</h1>
+        <p>Admin credentials and content import / export.</p>
+    </div>
+</div>
+
+<div class="a-card">
+    <h2>Change credentials</h2>
+    <p style="color:var(--a-muted); margin-top:-0.5rem;">Update the username or password used to sign in to this admin. Stored as a SHA-256 hash in your browser.</p>
+    <div id="pw-error"></div>
+    <form class="a-form" id="pw-form" style="margin-top:1rem;">
+        <div class="a-field">
+            <label for="new-user">Username</label>
+            <input id="new-user" type="text" value="" required>
+        </div>
+        <div class="a-field">
+            <label for="new-pass">New password</label>
+            <input id="new-pass" type="password" required minlength="6">
+            <div class="a-hint">At least 6 characters.</div>
+        </div>
+        <div class="a-field">
+            <label for="new-pass-2">Confirm new password</label>
+            <input id="new-pass-2" type="password" required minlength="6">
+        </div>
+        <button type="submit" class="a-btn a-btn-primary" style="align-self:flex-start;">Update credentials</button>
+    </form>
+</div>
+
+<div class="a-card">
+    <h2>Content backup</h2>
+    <p style="color:var(--a-muted); margin-top:-0.5rem;">Download all your edits as JSON, or import a previously exported file.</p>
+    <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:1rem;">
+        <button class="a-btn a-btn-primary" id="export-btn">Export edits</button>
+        <label class="a-btn" for="import-input" style="cursor:pointer;">Import edits…</label>
+        <input id="import-input" type="file" accept="application/json,.json" hidden>
+        <button class="a-btn a-btn-danger" id="wipe-btn">Wipe all edits</button>
+    </div>
+</div>
+
+<div class="a-card">
+    <h2>About</h2>
+    <div style="color:var(--a-ink-70); font-size:0.92rem; line-height:1.6;">
+        <p><strong>Tarlu Admin</strong> is a static content editor for the Tarlu preview site. Edits are persisted to your browser's localStorage and applied to the public pages via a lightweight override loader.</p>
+        <p style="margin-bottom:0;">This is a preview-build admin — authentication is client-side and credentials are stored locally. Do not use this to protect real secrets. To publish edits, export the JSON and commit the resulting content file to the site repository.</p>
+    </div>
+</div>
+
+<script src="assets/js/store.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+    (async function () {
+        if (!(await window.TarluAdmin.requireAuth())) return;
+        window.TarluAdmin.mountShell({ active: 'settings' });
+
+        var settings = window.TarluStore.settings();
+        document.getElementById('new-user').value = settings.username || 'admin';
+
+        var errBox = document.getElementById('pw-error');
+        document.getElementById('pw-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            errBox.innerHTML = '';
+            var u = document.getElementById('new-user').value.trim();
+            var p1 = document.getElementById('new-pass').value;
+            var p2 = document.getElementById('new-pass-2').value;
+            if (p1 !== p2) {
+                errBox.innerHTML = '<div class="a-alert a-alert-danger" style="margin-top:1rem;">Passwords do not match.</div>';
+                return;
+            }
+            if (p1.length < 6) {
+                errBox.innerHTML = '<div class="a-alert a-alert-danger" style="margin-top:1rem;">Password must be at least 6 characters.</div>';
+                return;
+            }
+            var hash = await window.TarluAdmin.sha256Hex(p1);
+            var next = window.TarluStore.settings();
+            next.username = u;
+            next.password_hash = hash;
+            next.credentials_changed = true;
+            window.TarluStore.saveSettings(next);
+            window.TarluAdmin.toast('Credentials updated.', 'success');
+            document.getElementById('new-pass').value = '';
+            document.getElementById('new-pass-2').value = '';
+        });
+
+        document.getElementById('export-btn').addEventListener('click', window.TarluAdmin.downloadEditsJson);
+
+        document.getElementById('import-input').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function (ev) {
+                try {
+                    window.TarluStore.importJson(ev.target.result);
+                    window.TarluAdmin.toast('Edits imported.', 'success');
+                } catch (err) {
+                    window.TarluAdmin.toast('Import failed: ' + err.message, 'danger');
+                }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        });
+
+        document.getElementById('wipe-btn').addEventListener('click', function () {
+            if (!confirm('Delete all local edits? This cannot be undone.')) return;
+            window.TarluStore.clearAll();
+            window.TarluAdmin.toast('All edits cleared.', 'success');
+        });
+    })();
+</script>
+
+</body>
+</html>

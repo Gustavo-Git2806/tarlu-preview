@@ -5,3 +5,12 @@ Thumbs.db
 
 # Local test files
 *.log
+
+# Node
+node_modules/
+package-lock.json
+
+# CI artifacts
+.lighthouseci/
+playwright-report/
+test-results/

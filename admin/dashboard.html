@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Dashboard — Tarlu Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/admin.css">
+<link rel="icon" href="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=64/mp8JxO6q3MTPNqDR/tarlu_nav_logo.3x-mk3JeXBqJKsKOvW4.png">
+</head>
+<body>
+
+<div class="a-header">
+    <div>
+        <h1 id="welcome">Dashboard</h1>
+        <p>Welcome back. Here's an overview of your site content.</p>
+    </div>
+    <div style="display:flex; gap:0.5rem;">
+        <a class="a-btn" href="../index.html" target="_blank" rel="noopener">View site</a>
+        <button class="a-btn a-btn-primary" id="export-btn">Export edits</button>
+    </div>
+</div>
+
+<div class="a-kpi-grid">
+    <div class="a-kpi">
+        <div class="a-kpi-label">Pages</div>
+        <div class="a-kpi-value" id="kpi-pages">–</div>
+        <div class="a-kpi-sub" id="kpi-pages-sub">Loading…</div>
+    </div>
+    <div class="a-kpi">
+        <div class="a-kpi-label">Pricing schedules</div>
+        <div class="a-kpi-value" id="kpi-schedules">–</div>
+        <div class="a-kpi-sub">Advanced pick · Packing · Surcharges</div>
+    </div>
+    <div class="a-kpi">
+        <div class="a-kpi-label">Forms</div>
+        <div class="a-kpi-value" id="kpi-forms">–</div>
+        <div class="a-kpi-sub">Enquiry · Complaints · Agency · Mailing</div>
+    </div>
+    <div class="a-kpi">
+        <div class="a-kpi-label">Unpublished edits</div>
+        <div class="a-kpi-value" id="kpi-edits">0</div>
+        <div class="a-kpi-sub" id="kpi-edits-sub">Nothing pending</div>
+    </div>
+</div>
+
+<div class="a-card">
+    <div class="a-card-head">
+        <h2>Recent activity</h2>
+        <a class="a-btn a-btn-ghost" href="pages.html">All pages →</a>
+    </div>
+    <div id="recent-activity">
+        <div class="a-empty">
+            <div class="a-empty-ico" data-icon="mail"></div>
+            <div>No edits yet. Head to <a href="pages.html" class="a-link">All pages</a> to make your first change.</div>
+        </div>
+    </div>
+</div>
+
+<div class="a-card">
+    <h2>Quick actions</h2>
+    <div class="a-quick-grid">
+        <a class="a-quick" href="edit.html?page=index"><span data-icon="edit"></span>Edit homepage</a>
+        <a class="a-quick" href="edit.html?page=fulfilment-service-surcharges"><span data-icon="tag"></span>Update surcharges</a>
+        <a class="a-quick" href="edit.html?page=fulfilment-terms-and-conditions"><span data-icon="file"></span>Review T&amp;Cs</a>
+        <a class="a-quick" href="edit.html?page=contact"><span data-icon="target"></span>Update contact info</a>
+    </div>
+</div>
+
+<script src="assets/js/store.js"></script>
+<script src="data/pages.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+    (async function () {
+        if (!(await window.TarluAdmin.requireAuth())) return;
+        window.TarluAdmin.mountShell({ active: 'dashboard' });
+
+        document.getElementById('welcome').textContent = 'Welcome back, ' + window.TarluStore.currentUser() + '.';
+
+        // Compute page-count KPIs from the schema (single source of truth).
+        var schema = window.TarluPagesSchema;
+        var totalPages = 0, publicPages = 0, hiddenPages = 0, schedules = 0, forms = 0;
+        schema.groups.forEach(function (g) {
+            g.pages.forEach(function (p) {
+                totalPages++;
+                if (p.visibility === 'public') publicPages++; else hiddenPages++;
+            });
+            if (g.id === 'schedules') schedules = g.pages.length;
+            if (g.id === 'forms') forms = g.pages.length;
+        });
+        document.getElementById('kpi-pages').textContent = totalPages;
+        document.getElementById('kpi-pages-sub').textContent = publicPages + ' public · ' + hiddenPages + ' hidden';
+        document.getElementById('kpi-schedules').textContent = schedules;
+        document.getElementById('kpi-forms').textContent = forms;
+
+        var stats = window.TarluStore.editStats();
+        document.getElementById('kpi-edits').textContent = stats.fields;
+        document.getElementById('kpi-edits-sub').textContent = stats.pages
+            ? (stats.pages + ' page' + (stats.pages > 1 ? 's' : '') + ' modified')
+            : 'Nothing pending';
+
+        // Recent activity list
+        var all = window.TarluStore.loadAll();
+        var pageSlugs = Object.keys(all);
+        if (pageSlugs.length) {
+            var html = '<div class="a-table-wrap"><table class="a-table"><thead><tr>' +
+                       '<th>Page</th><th>Fields changed</th><th style="text-align:right;">Actions</th>' +
+                       '</tr></thead><tbody>';
+            pageSlugs.forEach(function (slug) {
+                var count = Object.keys(all[slug]).length;
+                html += '<tr>' +
+                        '<td class="a-cell-title">' + window.TarluAdmin.escapeHtml(slug) + '</td>' +
+                        '<td>' + count + ' field' + (count > 1 ? 's' : '') + '</td>' +
+                        '<td class="a-actions">' +
+                            '<a class="a-btn a-btn-ghost" href="../' + window.TarluAdmin.escapeHtml(slug) + '.html" target="_blank" rel="noopener">Preview</a>' +
+                            '<a class="a-btn" href="edit.html?page=' + encodeURIComponent(slug) + '">Edit</a>' +
+                        '</td>' +
+                        '</tr>';
+            });
+            html += '</tbody></table></div>';
+            document.getElementById('recent-activity').innerHTML = html;
+        }
+
+        document.getElementById('export-btn').addEventListener('click', window.TarluAdmin.downloadEditsJson);
+    })();
+</script>
+
+</body>
+</html>

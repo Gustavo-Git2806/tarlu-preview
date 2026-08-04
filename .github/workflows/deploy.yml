@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Optional injection of Supabase credentials via GitHub Secrets.
+      # Set SUPABASE_URL and SUPABASE_ANON_KEY in the repo settings → Secrets → Actions.
+      # If either is missing, the site deploys in preview mode (forms are stubbed).
+      - name: Inject Supabase credentials
+        if: env.SUPABASE_URL != '' && env.SUPABASE_ANON_KEY != ''
+        env:
+          SUPABASE_URL:      ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          for f in *.html; do
+            sed -i "s|</head>|<meta name=\"tarlu-supabase\" content=\"${SUPABASE_URL}|${SUPABASE_ANON_KEY}\">\n</head>|" "$f"
+          done
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4

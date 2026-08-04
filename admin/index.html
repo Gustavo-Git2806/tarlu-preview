@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Sign in — Tarlu Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/admin.css">
+<link rel="icon" href="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=64/mp8JxO6q3MTPNqDR/tarlu_nav_logo.3x-mk3JeXBqJKsKOvW4.png">
+</head>
+<body>
+
+<div class="a-login">
+    <div class="a-login-card">
+        <div class="a-login-head">
+            <img class="a-login-logo" src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,h=80/mp8JxO6q3MTPNqDR/tarlu_nav_logo.3x-mk3JeXBqJKsKOvW4.png" alt="Tarlu" height="40">
+            <div class="a-login-head-text">
+                <strong>Admin</strong>
+                <span>Content management</span>
+            </div>
+        </div>
+
+        <h1>Sign in.</h1>
+        <p class="a-sub">Sign in to edit the Tarlu website content, pricing schedules and forms.</p>
+
+        <div id="login-error"></div>
+
+        <form class="a-form" id="login-form" autocomplete="on">
+            <div class="a-field">
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" value="admin" required autocomplete="username" autofocus>
+            </div>
+            <div class="a-field">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="a-btn a-btn-primary" id="login-btn">Sign in</button>
+        </form>
+
+        <div class="a-login-foot">
+            Preview credentials · <code>admin</code> / <code>tarlu2026</code><br>
+            Change these in Settings after first login.
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/store.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+    // If already authed, skip straight to dashboard.
+    if (window.TarluStore.isAuthed()) {
+        window.location.replace('dashboard.html');
+    }
+
+    var form = document.getElementById('login-form');
+    var errBox = document.getElementById('login-error');
+    var btn = document.getElementById('login-btn');
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        errBox.innerHTML = '';
+        btn.disabled = true;
+        btn.textContent = 'Signing in…';
+
+        var u = document.getElementById('username').value;
+        var p = document.getElementById('password').value;
+
+        try {
+            var ok = await window.TarluAdmin.attemptLogin(u, p);
+            if (ok) {
+                window.location.href = 'dashboard.html';
+            } else {
+                throw new Error('Incorrect username or password.');
+            }
+        } catch (err) {
+            errBox.innerHTML = '<div class="a-alert a-alert-danger" style="margin-bottom:1rem;"><span>' + window.TarluAdmin.escapeHtml(err.message) + '</span></div>';
+            btn.disabled = false;
+            btn.textContent = 'Sign in';
+        }
+    });
+</script>
+
+</body>
+</html>
