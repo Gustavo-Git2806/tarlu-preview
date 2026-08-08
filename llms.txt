@@ -1,0 +1,56 @@
+# Tarlu
+
+> Third-party logistics (3PL) provider for ecommerce brands. UK and EU warehousing, precision fulfilment, and end-to-end business support. Head office in Poole, Dorset, United Kingdom.
+
+Tarlu Ltd operates fulfilment centres across the UK and EU, serving ecommerce brands that need reliable inbound handling, secure storage, value-added services, and multi-carrier dispatch. Facilities are Soil Association accredited and HMRC Fulfilment House registered. Same-day dispatch cut-off is 3pm and pick accuracy runs at 99.9%.
+
+The site is currently a preview build hosted on GitHub Pages while the redesign of tarlu.com is being validated. All pages ship with structured data (Organization, LocalBusiness, Service, BreadcrumbList, FAQPage) even though search indexing is disabled during preview.
+
+## Core pages
+
+- [Home](https://gustavo-git2806.github.io/tarlu-preview/index.html): Company overview, testimonials, and primary value proposition for ambitious ecommerce brands.
+- [Services](https://gustavo-git2806.github.io/tarlu-preview/services.html): Full catalogue of 14 fulfilment services grouped into Inbound & storage, Value-added, Pick pack & dispatch, and UK business support. Includes FAQ section.
+- [Markets](https://gustavo-git2806.github.io/tarlu-preview/markets.html): 15+ industry sectors served, from health and wellness to sustainable brands.
+- [Contact](https://gustavo-git2806.github.io/tarlu-preview/contact.html): Enquiry form, phone, email and head office address. One working day response commitment.
+
+## Service details
+
+- [Inbound & storage](https://gustavo-git2806.github.io/tarlu-preview/services.html#grp-01): Goods-in processing, secure storage (ambient, bonded, food-grade), quality control.
+- [Value-added services](https://gustavo-git2806.github.io/tarlu-preview/services.html#grp-02): Assembly & kitting, bespoke packaging, freight forwarding, goods-in-transit insurance.
+- [Pick, pack & dispatch](https://gustavo-git2806.github.io/tarlu-preview/services.html#grp-03): Order picking & packing, gift boxing, personalised despatch messages, courier integration (Royal Mail, DPD, DHL, UPS, FedEx, Evri, Parcelforce).
+- [UK business support](https://gustavo-git2806.github.io/tarlu-preview/services.html#grp-04): UK VAT & EORI registration, company formation, import & customs compliance.
+
+## Pricing schedules
+
+- [Advanced pick services (current)](https://gustavo-git2806.github.io/tarlu-preview/advanced-pick-services.html): Per-item pricing for heavy goods, oversized goods, serial and batch tracking.
+- [Advanced pick services (2026)](https://gustavo-git2806.github.io/tarlu-preview/advanced-pick-services-2026.html): 2026 pricing schedule for advanced pick services.
+- [Packing fees](https://gustavo-git2806.github.io/tarlu-preview/packing-fees.html): Transparent fees for mailing bags, padded envelopes, boxes, void fill, pallets, and eco-friendly options.
+- [Fulfilment service surcharges (current)](https://gustavo-git2806.github.io/tarlu-preview/fulfilment-service-surcharges.html): Surcharges for goods-in, storage, picking, packing, shipping, returns, stock checks.
+- [Fulfilment service surcharges (2026)](https://gustavo-git2806.github.io/tarlu-preview/fulfilment-service-surcharges-2026.html): 2026 surcharge schedule.
+- [Client-supplied packaging](https://gustavo-git2806.github.io/tarlu-preview/client-supplied-packaging.html): Requirements, fees, and setup for clients supplying their own branded packaging.
+
+## Forms and requests
+
+- [Complete enquiry form](https://gustavo-git2806.github.io/tarlu-preview/complete-enquiry-form.html): Detailed quote-request form covering product type, volume, storage needs.
+- [Client mailing list](https://gustavo-git2806.github.io/tarlu-preview/client-mailing-list.html): Subscription for pricing updates, service changes, and industry insight.
+- [Complaints & feedback](https://gustavo-git2806.github.io/tarlu-preview/complaints.html): Formal complaint submission. Every issue reviewed and answered within 10 working days.
+
+## Legal
+
+- [Terms & conditions for 3PL services](https://gustavo-git2806.github.io/tarlu-preview/fulfilment-terms-and-conditions.html): Governing terms for Tarlu Ltd (company number 10080954). Laws of England and Wales.
+
+## Optional
+
+- [Agency labour request](https://gustavo-git2806.github.io/tarlu-preview/agency-request.html): Internal form for booking additional agency labour hours against a client account.
+
+## Company facts
+
+- Legal entity: Tarlu Ltd (Companies House 10080954)
+- Head office: 17 Factory Road, Poole, Dorset, BH16 5SN, United Kingdom
+- Email: enquiries@tarlu.com
+- Phone: +44 (0) 330 223 2218
+- Hours: Monday to Friday, 9am to 5pm GMT
+- Accreditations: Soil Association accredited, HMRC Fulfilment House registered
+- Coverage: United Kingdom and European Union
+- Social: facebook.com/tarluuk, instagram.com/tarluuk, linkedin.com/company/tarluuk
+- Response commitment: one working day for enquiries, ten working days for complaints

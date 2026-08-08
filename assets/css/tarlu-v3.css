@@ -606,6 +606,58 @@ section { padding: clamp(5rem, 10vw, 9rem) 0; }
 .testimonial-author strong { color: var(--paper); font-weight: 600; display: block; margin-bottom: 0.15rem; }
 .testimonial-author small { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
 
+/* ----- FAQ (details/summary accordion) -------------------------------- */
+.faq-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 2.5rem; }
+.faq-item {
+    background: var(--paper);
+    border: 1px solid var(--hairline, rgba(29, 30, 32, 0.1));
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.faq-item[open] {
+    border-color: var(--blue);
+    box-shadow: 0 6px 24px -12px rgba(0, 26, 120, 0.18);
+}
+.faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    color: var(--ink);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.35;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; border-radius: 12px; }
+.faq-q { flex: 1; }
+.faq-icon {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--stone-50);
+    color: var(--blue);
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: transform 0.25s ease, background 0.2s ease;
+}
+.faq-item[open] .faq-icon { transform: rotate(45deg); background: var(--blue); color: var(--paper); }
+.faq-a { padding: 0 1.5rem 1.4rem; color: var(--ink-70); }
+.faq-a p { margin: 0; line-height: 1.65; }
+@media (max-width: 600px) {
+    .faq-item summary { padding: 1rem 1.15rem; gap: 1rem; }
+    .faq-a { padding: 0 1.15rem 1.1rem; }
+}
+
 /* ----- Big CTA banner ------------------------------------------------- */
 /* Tarlu.com uses giant blue feature blocks — the CTA banner adopts that. */
 .cta-banner {
